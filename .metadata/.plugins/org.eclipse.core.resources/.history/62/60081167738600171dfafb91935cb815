@@ -1,0 +1,51 @@
+package br.com.primeiroprojeto.ws.service;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import br.com.primeiroprojeto.ws.modulo.Cliente;
+
+@Service
+public class ClienteService {
+
+	private Map<Integer, Cliente> clientes;
+	private Integer proximoID = 1;
+	
+	//metodos 
+	public Cliente cadastrar(Cliente cliente) {
+		
+		if(clientes == null) 
+			clientes = new HashMap<>();
+		
+		
+		if(cliente == null) 
+			return null;
+	
+		cliente.setId(proximoID);
+		proximoID++;
+		clientes.put(cliente.getId(), cliente);
+		return cliente;
+	}
+	
+	public Collection<Cliente> buscarTodos(){
+		return clientes.values();
+	}
+	
+	 
+	public void excluirID(Integer id) {
+		clientes.remove(id);			
+ 
+	}
+	
+	public Cliente buscaPorId(Integer id) {
+		return this.clientes.get(id);
+	}
+	
+	public void alterar(Cliente cliente) {
+		this.clientes.put(cliente.getId(), cliente);
+	}
+
+}

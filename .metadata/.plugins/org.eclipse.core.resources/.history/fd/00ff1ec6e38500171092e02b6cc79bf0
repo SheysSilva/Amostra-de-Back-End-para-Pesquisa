@@ -1,0 +1,5 @@
+package br.com.primeiroprojeto.ws.controller;
+
+public class ClienteController {
+
+}

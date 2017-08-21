@@ -1,0 +1,99 @@
+package br.com.primeiroprojeto.ws.controller;
+/*
+ * consumes -> consome informações do Json;
+ * produces -> produz Json com as informações passadas;
+ * ResponseEntity -> leva uma informação para o Browser, neste caso os objetos transformados em Json;
+ * @PathVariable -> seta o que estiver no caminho "clientes/{id}" por exemplo e inserir em uma variavel informada.
+ * 
+ */
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.primeiroprojeto.ws.modulo.Cliente;
+
+@RestController
+public class ClienteController {
+
+	Map<Integer, Cliente> clientes;
+	Integer proximoID = 1;
+	
+	//metodos 
+	private Cliente cadastrar(Cliente cliente) {
+		
+		if(clientes == null) 
+			clientes = new HashMap<>();
+		
+		
+		if(cliente == null) 
+			return null;
+	
+		cliente.setId(proximoID);
+		proximoID++;
+		clientes.put(cliente.getId(), cliente);
+		return cliente;
+	}
+	
+	public Collection<Cliente> buscarTodos(){
+		return clientes.values();
+	}
+	
+	 
+	public void excluirID(Integer id) {
+		clientes.remove(id);			
+ 
+	}
+	
+	public Cliente buscaPorId(Integer id) {
+		return this.clientes.get(id);
+	}
+	
+	public void alterar(Cliente cliente) {
+		this.clientes.put(cliente.getId(), cliente);
+	}
+	
+	//End points
+	@RequestMapping(method=RequestMethod.POST, value = "/clientes", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
+		
+		Cliente clienteCadastrado = cadastrar(cliente);
+		return new ResponseEntity<>(clienteCadastrado, HttpStatus.CREATED); 
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value = "/clientes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Cliente>> buscarTodosClientea() {
+		
+		Collection<Cliente> clientesBuscados = buscarTodos();
+		return new ResponseEntity<>(clientesBuscados, HttpStatus.OK); 
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value = "/clientes/{id}")
+	public ResponseEntity<Cliente> excluirCliente(@PathVariable Integer id) {
+		
+		Cliente clienteDeletado = this.buscaPorId(id);
+		
+		if(clienteDeletado == null) 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		excluirID(id);
+		return new ResponseEntity<>(clienteDeletado, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value = "/clientes", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> alterarCliente(@RequestBody Cliente cliente) {
+		this.alterar(cliente);
+		Cliente clienteAlterado = buscaPorId(cliente.getId());
+		return new ResponseEntity<>(clienteAlterado, HttpStatus.OK); 
+	}
+	
+} 

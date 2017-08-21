@@ -1,0 +1,5 @@
+package br.com.primeiroprojeto.ws.repository;
+
+public interface ClienteRepository extends JpaRepository {
+
+}

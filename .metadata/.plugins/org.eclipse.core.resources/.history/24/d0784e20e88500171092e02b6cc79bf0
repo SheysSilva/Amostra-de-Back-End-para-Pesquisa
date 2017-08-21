@@ -1,0 +1,5 @@
+package br.com.primeiroprojeto.ws.modulo;
+
+public class Cliente {
+
+}

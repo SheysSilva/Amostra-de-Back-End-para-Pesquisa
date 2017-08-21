@@ -1,0 +1,8 @@
+package br.com.primeiroprojeto.ws.repository;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ClienteRepository extends Repository {
+
+}

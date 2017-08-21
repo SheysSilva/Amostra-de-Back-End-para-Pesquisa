@@ -1,0 +1,9 @@
+package br.com.primeiroprojeto.ws.repository;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
+
+@Repository
+public interface ClienteRepository extends JpaRepository {
+
+}

@@ -1,0 +1,5 @@
+package br.com.primeiroprojeto.ws.service;
+
+public class ClienteService {
+
+}
